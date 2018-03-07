@@ -28,18 +28,28 @@ module.exports = function(app){
 		if (req.session && req.session.userId) {
 			res.render('home');
 		} else {
-			res.render('info_page',{data: 'You must be logged in to view this page. Back to ', name:'login', link:'login_page'});
+			res.render('login');
 		}
 	});
-	app.get('/profile_page', function(req, res){
+	// app.get('/profile_page', function(req, res){
+	// 	if (req.session && req.session.userId) {
+	// 		res.render('profile_page');
+	// 	} else {
+	// 		res.render('info_page',{data: 'You must be logged in to view this page. Back to ', name:'login', link:'login_page'});
+	// 	}
+	// });
+	// app.post('/savePlan',PlanController.savePlan);
+
+	app.get('/profile_page', UserController.getProfile);
+	
+	app.get('/plans_page', function(req, res){
 		if (req.session && req.session.userId) {
-			res.render('profile_page');
+			res.render('plans_page');
 		} else {
 			res.render('info_page',{data: 'You must be logged in to view this page. Back to ', name:'login', link:'login_page'});
-		}
+		}	
 	});
-	// app.post('/savePlan',PlanController.savePlan);
-	
+	app.get('/get_plans', PlanController.getPlans);
 	app.get('/contact', function(req, res){
 		res.render('contact', { csrf: 'CSRF token here'});
 	});
@@ -61,9 +71,10 @@ module.exports = function(app){
 	app.post('/savePlan',PlanController.savePlan);
 	app.post('/searchPlan',PlanController.searchPlan);
 	app.post('/joinPlan',PlanController.joinPlan);
-	app.post('/profile_page', function(req, res){
-		res.redirect('/profile_page');
-	});
+	// app.post('/profile_page', function(req, res){
+	// 	res.redirect('/profile_page');
+	// });
+	app.post('/profile_page', UserController.updateProfile);
 	app.post('/createUser', UserController.createUser);
 	app.post('/loginUser', UserController.loginUser);
 	// app.post('/searchPlan', function(req, res){
@@ -79,11 +90,11 @@ module.exports = function(app){
 	// app.post('/profile_page', function(req, res){
 	// 	res.redirect('/profile_page');
 	// });
-	
+
 
 	// Routes related to User
-	
-	
+
+
 	// app.get('/register_page', function(req, res){
 	// 		res.render('register');
 	// });
